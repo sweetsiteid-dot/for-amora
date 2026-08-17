@@ -1,271 +1,463 @@
-function checkPassword(){
+/* =========================
+   PASSWORD
+========================= */
 
-const password =
-document.getElementById("passwordInput").value;
+function checkPassword() {
 
-if(password === "2608"){
+    const password =
+        document.getElementById("passwordInput").value.trim();
 
-document.getElementById("passwordScreen")
-.style.display="none";
+    if (password === "2608") {
 
-document.getElementById("websiteContent")
-.style.display="block";
+        const passwordScreen =
+            document.getElementById("passwordScreen");
 
-}else{
+        const websiteContent =
+            document.getElementById("websiteContent");
 
-alert("Wrong Password 🤍");
+        passwordScreen.style.opacity = "0";
+
+        setTimeout(() => {
+
+            passwordScreen.style.display = "none";
+            websiteContent.style.display = "block";
+
+        }, 500);
+
+    } else {
+
+        alert("Wrong Password 🖤");
+
+        document.getElementById("passwordInput").value = "";
+
+        document.getElementById("passwordInput").focus();
+
+    }
 
 }
 
-}
 
-function openGift(){
+/* =========================
+   ENTER TO UNLOCK
+========================= */
 
-document.getElementById("music").play();
+document.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById("giftSection")
-.scrollIntoView({
-behavior:"smooth"
+    const passwordInput =
+        document.getElementById("passwordInput");
+
+    passwordInput.addEventListener("keydown", (event) => {
+
+        if (event.key === "Enter") {
+
+            checkPassword();
+
+        }
+
+    });
+
 });
 
-}
 
-/* FLOATING HEARTS */
+/* =========================
+   OPEN GIFT
+========================= */
 
-function createHeart(){
+function openGift() {
 
-const heart=document.createElement("div");
+    const music =
+        document.getElementById("music");
 
-heart.innerHTML="🤍";
+    const giftSection =
+        document.getElementById("giftSection");
 
-heart.style.position="absolute";
 
-heart.style.left=
-Math.random()*100+"vw";
+    /* PLAY MUSIC */
 
-heart.style.top="-30px";
+    if (music) {
 
-heart.style.fontSize=
-(Math.random()*20+15)+"px";
+        music.play().catch(() => {
 
-heart.style.opacity=
-Math.random();
+            console.log(
+                "Music membutuhkan interaksi pengguna."
+            );
 
-heart.style.animation=
-`fall ${Math.random()*4+6}s linear`;
+        });
 
-document.getElementById("hearts")
-.appendChild(heart);
+    }
 
-setTimeout(()=>{
-heart.remove();
-},10000);
 
-}
+    /* SCROLL TO MESSAGE */
 
-setInterval(createHeart,400);
+    if (giftSection) {
 
-/* HEART ANIMATION */
+        giftSection.scrollIntoView({
+            behavior: "smooth"
+        });
 
-const style=document.createElement("style");
-
-style.innerHTML=`
-
-@keyframes fall{
-
-0%{
-transform:translateY(0);
-opacity:1;
-}
-
-100%{
-transform:translateY(110vh);
-opacity:0;
-}
+    }
 
 }
 
-.fade-in{
 
-opacity:0;
+/* =========================
+   FLOATING HEARTS
+========================= */
 
-transform:
-translateY(40px);
+function createHeart() {
 
-transition:
-all 1s ease;
+    const hearts =
+        document.getElementById("hearts");
+
+    if (!hearts) return;
+
+
+    const heart =
+        document.createElement("div");
+
+    heart.innerHTML = "🖤";
+
+    heart.style.position = "fixed";
+
+    heart.style.left =
+        Math.random() * 100 + "vw";
+
+    heart.style.top = "-30px";
+
+    heart.style.fontSize =
+        (Math.random() * 15 + 12) + "px";
+
+    heart.style.opacity =
+        Math.random() * 0.6 + 0.3;
+
+    heart.style.pointerEvents = "none";
+
+    heart.style.zIndex = "10";
+
+
+    const duration =
+        Math.random() * 4 + 5;
+
+    heart.style.animation =
+        `fall ${duration}s linear`;
+
+
+    hearts.appendChild(heart);
+
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    }, duration * 1000 + 500);
+
 }
 
-.fade-in.show{
 
-opacity:1;
+setInterval(createHeart, 500);
 
-transform:
-translateY(0);
+
+/* =========================
+   HEART ANIMATION
+========================= */
+
+const style =
+    document.createElement("style");
+
+style.innerHTML = `
+
+@keyframes fall {
+
+    0% {
+
+        transform:
+            translateY(0)
+            rotate(0deg);
+
+        opacity: 0;
+
+    }
+
+    10% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        transform:
+            translateY(110vh)
+            rotate(360deg);
+
+        opacity: 0;
+
+    }
+
+}
+
+.fade-in {
+
+    opacity: 0;
+
+    transform:
+        translateY(40px);
+
+    transition:
+        all 1s ease;
+
+}
+
+.fade-in.show {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+
 }
 
 `;
 
 document.head.appendChild(style);
 
-/* SCROLL ANIMATION */
 
-const observer=
-new IntersectionObserver(entries=>{
+/* =========================
+   SCROLL ANIMATION
+========================= */
 
-entries.forEach(entry=>{
+const observer =
+    new IntersectionObserver(
+        entries => {
 
-if(entry.isIntersecting){
+            entries.forEach(entry => {
 
-entry.target.classList.add("show");
+                if (entry.isIntersecting) {
 
-}
+                    entry.target.classList.add("show");
 
-});
+                }
 
-},{
-threshold:0.15
-});
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
 
 document.querySelectorAll(
-".section,.polaroid,.reason-card,.final-section,.ending"
-).forEach(el=>{
+    ".section, .polaroid, .reason-card, .final-section, .ending"
+).forEach(element => {
 
-el.classList.add("fade-in");
+    element.classList.add("fade-in");
 
-observer.observe(el);
-
-});
-
-/* POLAROID EFFECT */
-
-const polaroids=
-document.querySelectorAll(".polaroid");
-
-polaroids.forEach(card=>{
-
-card.addEventListener("mouseenter",()=>{
-
-card.style.transform=
-"scale(1.08) rotate(0deg)";
+    observer.observe(element);
 
 });
 
-card.addEventListener("mouseleave",()=>{
 
-card.style.transform="";
+/* =========================
+   POLAROID EFFECT
+========================= */
+
+const polaroids =
+    document.querySelectorAll(".polaroid");
+
+
+polaroids.forEach(card => {
+
+    card.addEventListener(
+        "mouseenter",
+        () => {
+
+            card.style.transform =
+                "scale(1.08) rotate(0deg)";
+
+            card.style.zIndex = "20";
+
+        }
+    );
+
+
+    card.addEventListener(
+        "mouseleave",
+        () => {
+
+            card.style.transform = "";
+
+            card.style.zIndex = "";
+
+        }
+    );
 
 });
 
-});
 
-/* PARALLAX HERO */
+/* =========================
+   PARALLAX HERO
+========================= */
 
-window.addEventListener("scroll",()=>{
+window.addEventListener(
+    "scroll",
+    () => {
 
-const hero=
-document.querySelector(".hero");
+        const hero =
+            document.querySelector(".hero");
 
-const scroll=
-window.pageYOffset;
+        if (!hero) return;
 
-hero.style.backgroundPositionY=
-scroll*0.4+"px";
 
-});
+        const scroll =
+            window.pageYOffset;
 
-/* RANDOM QUOTES */
 
-const quotes=[
+        hero.style.backgroundPositionY =
+            scroll * 0.4 + "px";
 
-"Twenty-one looks beautiful on you 🤍",
+    }
+);
 
-"May every dream find its way to you ✨",
 
-"You make the world brighter 🌙",
+/* =========================
+   RANDOM COMPLIMENTS
+========================= */
 
-"Your smile deserves its own holiday 🤍",
+const quotes = [
 
-"The best chapters are still ahead 📖",
+    "u face? fucking gorgeous. 🖤",
 
-"You are loved more than you know 🤍"
+    "your smile is actually insane.",
+
+    "your personality is cute as hell.",
+
+    "you don't even have to try to be pretty.",
+
+    "your little things are my favorite.",
+
+    "your soul is even prettier.",
+
+    "please stop being so mean to yourself.",
+
+    "just be you. that's already enough.",
+
+    "damn, I really like this girl.",
+
+    "u face, u soul. so fucking pretty."
 
 ];
 
-const quoteElement=
-document.createElement("div");
 
-quoteElement.className=
-"floating-quote";
+const quoteElement =
+    document.createElement("div");
 
-quoteElement.innerText=
-quotes[0];
+quoteElement.className =
+    "floating-quote";
+
+quoteElement.innerText =
+    quotes[0];
+
 
 document.body.appendChild(
-quoteElement
+    quoteElement
 );
 
-let currentQuote=0;
 
-setInterval(()=>{
+let currentQuote = 0;
 
-currentQuote++;
 
-if(currentQuote>=quotes.length){
-currentQuote=0;
-}
+setInterval(() => {
 
-quoteElement.style.opacity=0;
+    currentQuote++;
 
-setTimeout(()=>{
+    if (
+        currentQuote >= quotes.length
+    ) {
 
-quoteElement.innerText=
-quotes[currentQuote];
+        currentQuote = 0;
 
-quoteElement.style.opacity=1;
+    }
 
-},500);
 
-},5000);
+    quoteElement.style.opacity = "0";
 
-/* QUOTE STYLE */
 
-const quoteStyle=
-document.createElement("style");
+    setTimeout(() => {
 
-quoteStyle.innerHTML=`
+        quoteElement.innerText =
+            quotes[currentQuote];
 
-.floating-quote{
+        quoteElement.style.opacity =
+            "1";
 
-position:fixed;
+    }, 500);
 
-bottom:20px;
+}, 4500);
 
-left:50%;
 
-transform:translateX(-50%);
+/* =========================
+   QUOTE STYLE
+========================= */
 
-background:
-rgba(255,255,255,.08);
+const quoteStyle =
+    document.createElement("style");
 
-backdrop-filter:blur(10px);
 
-padding:12px 20px;
+quoteStyle.innerHTML = `
 
-border-radius:50px;
+.floating-quote {
 
-font-size:14px;
+    position: fixed;
 
-color:white;
+    bottom: 20px;
 
-z-index:999;
+    left: 50%;
 
-transition:.5s;
+    transform:
+        translateX(-50%);
+
+    background:
+        rgba(0,0,0,.65);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+
+    padding:
+        12px 20px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:
+        50px;
+
+    font-size:
+        13px;
+
+    color:
+        white;
+
+    text-align:
+        center;
+
+    z-index:
+        999;
+
+    transition:
+        opacity .5s ease;
+
+    max-width:
+        85%;
 
 }
 
 `;
 
 document.head.appendChild(
-quoteStyle
+    quoteStyle
 );
